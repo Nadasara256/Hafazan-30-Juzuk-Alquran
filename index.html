@@ -232,18 +232,49 @@ details.card[open]>summary{margin-bottom:10px}
 #shNote{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 10px;resize:vertical;min-height:54px}
 #scopeSeg{gap:3px}
 #scopeSeg button{padding:8px 3px;font-size:.92rem}
+
+/* kelompok 4: panduan, ubah bahagian, mod murajaah */
+.topr{display:flex;align-items:center;gap:8px}
+#btnHelp{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--accent);font-weight:700;font-size:1.15rem;line-height:1;cursor:pointer;flex:none}
+body.testing .topr{display:none}
+#helpBg,#splitBg{position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:39}
+#helpPanel,#splitSheet{position:fixed;left:0;right:0;bottom:0;margin:0 auto;max-width:780px;z-index:40;background:var(--surface);border:1px solid var(--line);border-radius:18px 18px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));box-shadow:0 -10px 34px rgba(0,0,0,.28);max-height:92vh;overflow:auto}
+#helpPanel .sh-head,#splitSheet .sh-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+#helpPanel .sh-head b,#splitSheet .sh-head b{font-size:1.1rem}
+#hpClose,#spClose{border:1px solid var(--line);background:var(--bg);border-radius:10px;width:36px;height:36px;cursor:pointer}
+.hp-body details{border-top:1px solid var(--line);padding:9px 0}
+.hp-body summary{cursor:pointer;font-weight:600}
+.hp-body p,.hp-body li{font-size:.92rem;color:var(--ink2);margin:5px 0;line-height:1.5}
+.hp-body ul,.hp-body ol{margin:5px 0;padding-left:20px}
+#plMode{padding:12px 14px}
+#plMode.on{border-color:var(--accent);background:var(--tint)}
+#plMode summary{cursor:pointer;font-weight:600}
+#plMode .sh-fields{margin:10px 0}
+#plMode .row{margin:0}
+.sp-row{display:flex;gap:10px;align-items:center;padding:8px 8px;border-top:1px solid var(--line)}
+.sp-row[data-k="1"],.sp-row[data-k="3"]{background:var(--tint)}
+.sp-bd{flex:none;min-width:34px;text-align:center;font-size:.78rem;font-weight:700;border-radius:8px;padding:3px 6px;background:var(--bg);border:1px solid var(--line)}
+.sp-tx{flex:1;min-width:0}
+.sp-tx b{display:block;font-size:.9rem}
+.sp-tx small{color:var(--ink2)}
+.sp-tx .ar{font-family:"QuranFont",serif;direction:rtl;unicode-bidi:isolate;font-size:1.15rem;display:block;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sp-cut{flex:none;width:42px;height:42px;border-radius:10px;border:1px solid var(--line);background:var(--bg);cursor:pointer;font-size:1.05rem}
+.sp-cut[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+#splitSheet .row{margin:10px 0 0}
+#splitSheet .row .btn{flex:1}
+.plhdbtn{margin-top:10px}
 </style>
 </head>
 <body>
 <div class="app">
   <header class="top">
     <h1>Hafazan Al-Quran<small>Rekod Hafazan 30 Juzuk Al-Quran</small></h1>
-    <nav class="tabs" aria-label="Menu utama">
+    <div class="topr"><nav class="tabs" aria-label="Menu utama">
       <button data-tab="track" aria-label="Tracker" title="Tracker"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.2"/><path d="M14 17.2l2.2 2.2 4-4.6"/></svg></button>
       <button data-tab="plan" aria-label="Jadual" title="Jadual"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16"/><path d="M9 3v4"/><path d="M15 3v4"/><path d="M9.5 15l2 2 3.5-3.8"/></svg></button>
       <button data-tab="setup" aria-label="Uji" title="Uji"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg></button>
       <button data-tab="more" aria-label="Tetapan" title="Tetapan"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9"/><path d="M19 7h1"/><circle cx="16" cy="7" r="2.2"/><path d="M4 17h1"/><path d="M11 17h9"/><circle cx="8" cy="17" r="2.2"/></svg></button>
-    </nav>
+    </nav><button type="button" id="btnHelp" aria-label="Panduan" title="Panduan" aria-haspopup="dialog">?</button></div>
   </header>
   <div id="notice" class="notice" hidden></div>
 
@@ -251,6 +282,24 @@ details.card[open]>summary{margin-bottom:10px}
   <!-- ============ SETUP ============ -->
   <section id="v-plan" hidden>
     <div class="card" id="plHead"></div>
+    <div class="card" id="plMode">
+      <div id="mmOff">
+        <details id="mmForm"><summary>Mod Murajaah</summary>
+          <p class="muted">Untuk hari-hari anda tidak boleh menambah hafalan baharu. Tiada tugasan hafaz baharu; murajaah dipecah kepada tiga sesi (Subuh, Asar, Isyak). Hari-hari ini tidak dikira dalam anggaran kelajuan di Tracker.</p>
+          <div class="sh-fields">
+            <label>Mula <input type="date" id="mmStart"></label>
+            <label>Jangka (hari) <input type="number" id="mmDays" min="1" max="30" inputmode="numeric" placeholder="manual"></label>
+          </div>
+          <p class="muted" style="margin:0 0 10px">Kosongkan jangka jika mahu menamatkannya sendiri.</p>
+          <div class="row"><button type="button" class="btn primary" id="mmGo">Mulakan Mod Murajaah</button></div>
+        </details>
+      </div>
+      <div id="mmOn" hidden>
+        <b>Mod Murajaah aktif</b>
+        <p class="muted" id="mmInfo" style="margin:4px 0 10px"></p>
+        <div class="row"><button type="button" class="btn" id="mmStop">Tamatkan Mod Murajaah</button></div>
+      </div>
+    </div>
     <p class="muted" id="plMsg" role="status" style="margin:0 0 12px"></p>
     <div id="plSlots"></div>
     <details class="card" id="plMethod"><summary>Kaedah &amp; prinsip</summary>
@@ -434,6 +483,75 @@ details.card[open]>summary{margin-bottom:10px}
   </main>
   <p class="credit"><b><i>@nadasara256</i></b></p>
 </div>
+<div id="helpBg" hidden></div>
+<div id="helpPanel" role="dialog" aria-modal="true" aria-labelledby="hpTitle" hidden>
+  <div class="sh-head"><b id="hpTitle">Panduan</b><button type="button" id="hpClose" aria-label="Tutup">✕</button></div>
+  <div class="hp-body">
+    <details open><summary>Mula pantas</summary>
+      <ol>
+        <li>Buka <b>Tracker</b>, tekan satu juzuk, kemudian tandakan muka surat yang sudah dihafal dan pilih tarikh hafal.</li>
+        <li>Buka <b>Jadual</b> untuk tugasan harian mengikut waktu solat.</li>
+        <li>Buka <b>Uji</b> untuk menguji hafalan.</li>
+        <li>Semua kemajuan disimpan sendiri pada peranti ini. Tiada butang simpan.</li>
+      </ol>
+    </details>
+    <details><summary>Tracker</summary>
+      <ul>
+        <li>Tekan nama juzuk untuk melihat muka surat. Tekan satu muka surat untuk menukar statusnya.</li>
+        <li>Tekan <b>Tandakan juzuk…</b> untuk menanda banyak muka surat sekali gus. Ubah <b>Dari</b> dan <b>hingga</b> jika mahu julat lain.</li>
+        <li>Status: <b>Belum</b>, <b>Sedang hafal</b>, <b>Sudah hafal</b> dan <b>Perlu ulang</b>.</li>
+        <li><b>Tarikh hafal:</b> bagi muka surat yang belum hafal, pilih tarikh dahulu, kemudian tekan <b>Sudah hafal</b>. Bagi muka surat yang sudah hafal, menukar tarikh terus disimpan.</li>
+        <li>Bagi satu julat, tarikh hanya digunakan untuk muka surat yang belum ada tarikh. Tandakan <b>Tukar juga tarikh hafal</b> jika mahu menggantikan semuanya.</li>
+        <li><b>Diulang hari ini</b> mencatat murajaah. <b>Uji muka surat ini</b> terus memulakan ujian.</li>
+        <li>Ruang nota di setiap muka surat berguna untuk bahagian yang sering terlupa.</li>
+        <li>Butang − dan + menukar sasaran juzuk sebulan. Carta menunjukkan muka yang dihafal setiap bulan dalam 6 bulan terakhir, bersama anggaran khatam.</li>
+      </ul>
+    </details>
+    <details><summary>Jadual</summary>
+      <ul>
+        <li>Tugasan hari ini disusun mengikut waktu: murajaah dan Bahagian 1 selepas Subuh, Bahagian 2 selepas Zohor, Bahagian 3 selepas Asar, Bahagian 4 dan Tie Method selepas Maghrib, serta bacaan penuh 40× selepas Isyak.</li>
+        <li>Tandakan kotak apabila siap. Menanda bacaan penuh 40× akan menjadikan muka surat itu <b>Sudah hafal</b> dalam Tracker. Menanda murajaah akan mengemas kini tarikh ulang.</li>
+        <li><b>Pembahagian ayat</b> Bahagian 1 hingga 4 dibuat automatik mengikut bilangan perkataan. Tekan <b>Ubah</b> pada satu bahagian, atau <b>Ubah pembahagian ayat</b>, untuk melaras. <b>Set semula auto</b> mengembalikannya.</li>
+        <li>Di bawah <b>Tetapan jadual</b>: muka baharu sehari (1 atau ½), hari hafaz, muka surat permulaan dan waktu peringatan. <b>Eksport peringatan (.ics)</b> menghasilkan fail untuk kalendar telefon.</li>
+        <li>Butang <b>Uji murajaah hari ini</b> menguji muka surat yang dijadualkan hari ini.</li>
+      </ul>
+    </details>
+    <details><summary>Mod Murajaah</summary>
+      <ul>
+        <li>Guna bila tidak boleh menambah hafalan baharu. Buka kad <b>Mod Murajaah</b> di Jadual, pilih tarikh mula, isi jangka hari jika diketahui, kemudian tekan <b>Mulakan</b>.</li>
+        <li>Tiada tugasan hafaz baharu. Murajaah dipecah kepada tiga sesi (Subuh, Asar, Isyak), dengan muka yang paling lama tidak diulang didahulukan.</li>
+        <li>Tekan <b>Tamatkan Mod Murajaah</b> apabila sudah boleh menghafal semula. Jika jangka diisi, ia tamat sendiri.</li>
+        <li>Muka baharu yang menunggu kekal menunggu. Hari-hari Mod Murajaah tidak dikira dalam anggaran kelajuan di Tracker.</li>
+      </ul>
+    </details>
+    <details><summary>Uji</summary>
+      <ul>
+        <li>Pilih skop (juzuk, surah, muka surat, Sudah hafal, Perlu ulang atau tersuai), pilih mod, kemudian tekan mula.</li>
+        <li>Mod: Sambung Ayat, Ayat Sebelum, Tutup Perkataan, Teka Lokasi, atau Campur.</li>
+        <li>Nilai diri sendiri: <b>Lancar</b>, <b>Ragu-ragu</b> atau <b>Lupa</b>. Jika petunjuk digunakan, Lancar tidak boleh dipilih.</li>
+        <li><b>Statistik uji</b> (butang di atas halaman Uji) menunjukkan ringkasan keputusan dan ayat yang lemah.</li>
+        <li>Selepas ujian, aplikasi boleh mencadangkan kemas kini Tracker bagi muka surat yang lemah atau lancar.</li>
+      </ul>
+    </details>
+    <details><summary>Simpan, sandaran &amp; pasang app</summary>
+      <ul>
+        <li>Data disimpan dalam pelayar pada peranti ini sahaja. Telefon dan tablet tidak berkongsi data.</li>
+        <li>Di <b>Tetapan</b>, guna <b>Eksport kemajuan</b> untuk sandaran atau untuk memindahkan data, dan <b>Import kemajuan</b> untuk memulihkannya. Eksport sebelum membersihkan data pelayar.</li>
+        <li><b>Padam semua kemajuan</b> tidak boleh diundur.</li>
+        <li>Versi dalam talian (GitHub Pages) boleh dipasang: pada Android Chrome pilih menu ⋮ kemudian <i>Pasang aplikasi</i>; pada iPhone Safari pilih Kongsi kemudian <i>Tambah ke Skrin Utama</i>. Selepas dibuka sekali, ia berfungsi tanpa internet.</li>
+        <li>Di Tetapan juga ada pilihan tema, saiz tulisan Quran dan bunyi.</li>
+      </ul>
+    </details>
+  </div>
+</div>
+<div id="splitBg" hidden></div>
+<div id="splitSheet" role="dialog" aria-modal="true" aria-labelledby="spTitle" hidden>
+  <div class="sh-head"><b id="spTitle"></b><button type="button" id="spClose" aria-label="Tutup">✕</button></div>
+  <p class="muted" id="spInfo" style="margin:0 0 8px"></p>
+  <div id="spList"></div>
+  <p class="muted" id="spCount" role="status"></p>
+  <div class="row"><button type="button" class="btn" id="spAuto">Set semula auto</button><button type="button" class="btn primary" id="spSave">Simpan</button></div>
+</div>
 <div id="sheetBg" hidden></div>
 <div id="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle" hidden>
   <div class="sh-head"><b id="shTitle"></b><button type="button" id="shClose" aria-label="Tutup">✕</button></div>
@@ -443,6 +561,7 @@ details.card[open]>summary{margin-bottom:10px}
     <label>hingga <input type="number" id="shTo" min="1" max="604" inputmode="numeric"></label>
     <label>Tarikh hafal <input type="date" id="shDate"></label>
   </div>
+  <label class="check" id="shForceWrap" style="border:0;padding:0;margin:0 0 10px" hidden><input type="checkbox" id="shForce"><span>Tukar juga tarikh hafal bagi muka surat yang sudah ada tarikh</span></label>
   <label class="sh-note" id="shNoteWrap"><span>Nota muka surat ini</span><textarea id="shNote" maxlength="200" rows="2" placeholder="Contoh: susah sambung ke muka 24"></textarea></label>
   <div id="shStatus" role="group" aria-label="Status">
     <button type="button" class="btn st0" data-s="0">○ Belum</button>
@@ -906,14 +1025,19 @@ for(let p=1;p<=604;p++){const j=AY[PS[p-1]].j;PAGE_JUZ[p]=j;JUZ_PAGES[j].push(p)
 const pageLast=p=>p<604?PS[p]-1:N-1;
 function pgStatus(p){const r=trk.p[p];return r?r[0]:0;}
 function fmtDate(ts){if(!ts)return '—';const d=new Date(ts);return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();}
-function setStatus(a,b,s,when){
+function setStatus(a,b,s,when,force){
   const now=Date.now(),w=when||now;
   for(let p=a;p<=b;p++){
     if(s===0){delete trk.p[p];continue;}
     let r=trk.p[p];if(!r){r=[0,0,0];trk.p[p]=r;}
     if(s===1){r[1]=0;r[2]=0;}
-    if((s===2||s===3)&&!r[1])r[1]=w;
+    if((s===2||s===3)){
+      const o=r[1];
+      if(!o)r[1]=w;
+      else if(force&&when){r[1]=w;if(r[2]===o)r[2]=w;}
+    }
     if(s===2&&!r[2])r[2]=w;
+    if(r[1]&&r[2]&&r[2]<r[1])r[2]=r[1];
     r[0]=s;
   }
   store.set('trk',trk);
@@ -978,6 +1102,9 @@ function renderTrkChart(){
   const box=$('#tkChart');box.textContent='';box.append(svg);
   $('#tkChartKey').textContent='Garis putus-putus: sasaran '+target+' muka sebulan.';
   const day=864e5,W=Math.min(90,Math.floor((Date.now()-first)/day));let txt;
+  let mmd=0;for(let q=0;q<W;q++){if(mmWas(dkey(new Date(Date.now()-q*day))))mmd++;}
+  const Wn=Math.max(7,W-mmd),hasMM=!!(jdl.mm||jdl.mmHist.length);
+  if(hasMM)$('#tkChartKey').textContent+=' Hari Mod Murajaah tidak dikira dalam anggaran kelajuan.';
   if(W<14)txt='Anggaran ikut kelajuan sebenar: belum cukup catatan (perlu sekurang-kurangnya 2 minggu sejak tarikh hafal terawal).';
   else{
     const cut=Date.now()-W*day;let n=0;
@@ -985,8 +1112,8 @@ function renderTrkChart(){
     if(!n)txt='Anggaran ikut kelajuan sebenar: tiada muka surat baharu dicatat dalam '+W+' hari lepas.';
     else if(mem>=604)txt='Khatam, Alhamdulillah.';
     else{
-      const rate=n/W,d=new Date(Date.now()+(604-mem)/rate*day);
-      txt='Ikut kelajuan sebenar ('+(rate*30.4375).toFixed(1).replace('.',',')+' muka sebulan, '+W+' hari lepas): anggaran khatam '+MONTHS[d.getMonth()]+' '+d.getFullYear()+'.';
+      const rate=n/Wn,d=new Date(Date.now()+(604-mem)/rate*day);
+      txt='Ikut kelajuan sebenar ('+(rate*30.4375).toFixed(1).replace('.',',')+' muka sebulan, '+W+' hari lepas'+(mmd?', tidak termasuk '+mmd+' hari Mod Murajaah':'')+'): anggaran khatam '+MONTHS[d.getMonth()]+' '+d.getFullYear()+'.';
     }
   }
   $('#tkActual').textContent=txt;
@@ -1031,14 +1158,24 @@ function updateSheet(){
   if(a===b)fillLoc(inf,PS[a-1],pageLast(a));
   else inf.textContent=(b-a+1)+' muka surat · Juz '+(PAGE_JUZ[a]===PAGE_JUZ[b]?PAGE_JUZ[a]:PAGE_JUZ[a]+'–'+PAGE_JUZ[b]);
   const rec=a===b?trk.p[a]:null;
-  $('#shDates').textContent=a===b?'Status: '+TS[pgStatus(a)]+' · Mula hafal: '+fmtDate(rec&&rec[1])+' · Terakhir diulang: '+fmtDate(rec&&rec[2]):'Tarikh hafal digunakan untuk muka surat yang baru ditandakan hafal.';
+  $('#shDates').textContent=a===b?'Status: '+TS[pgStatus(a)]+' · Mula hafal: '+fmtDate(rec&&rec[1])+' · Terakhir diulang: '+fmtDate(rec&&rec[2])+(pgStatus(a)>=2?'':' · Pilih tarikh hafal di atas sebelum menekan Sudah hafal.'):'Tarikh hafal digunakan untuk muka surat yang belum ada tarikh. Tandakan kotak di atas untuk menggantikan semuanya.';
+  $('#shForceWrap').hidden=a===b;
   $$('#shStatus button').forEach(x=>x.classList.toggle('cur',a===b&&+x.dataset.s===pgStatus(a)));
   $('#shNoteWrap').hidden=a!==b;if(a===b)$('#shNote').value=trk.n[a]||'';
 }
 function todayStr(){const t=new Date();return t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');}
+function sheetDateTs(){
+  const dv=$('#shDate').value;if(!dv)return 0;
+  const q=dv.split('-').map(Number),t=new Date(q[0],q[1]-1,q[2],12).getTime();
+  return !t||t>Date.now()?Date.now():t;
+}
+function syncSheetDate(){
+  const r=sheetRange(),rec=r[0]===r[1]?trk.p[r[0]]:null;
+  $('#shDate').value=rec&&rec[1]?dkey(new Date(rec[1])):todayStr();
+}
 function openSheet(a,b,from){
   sheetFocus=from||document.activeElement;
-  $('#shFrom').value=a;$('#shTo').value=b;$('#shDate').value=todayStr();$('#shDate').max=todayStr();
+  $('#shFrom').value=a;$('#shTo').value=b;$('#shDate').max=todayStr();$('#shForce').checked=false;syncSheetDate();
   $('#sheet').hidden=false;$('#sheetBg').hidden=false;updateSheet();$('#shClose').focus();
 }
 function closeSheet(){
@@ -1047,10 +1184,8 @@ function closeSheet(){
 }
 function applyStatus(s){
   const r=sheetRange(),a=r[0],b=r[1];
-  let when=0;const dv=$('#shDate').value;
-  if(dv){const q=dv.split('-').map(Number);when=new Date(q[0],q[1]-1,q[2],12).getTime();}
-  if(!when||when>Date.now())when=Date.now();
-  setStatus(a,b,s,when);closeSheet();refreshTracker();
+  const when=sheetDateTs()||Date.now(),force=a===b||$('#shForce').checked;
+  setStatus(a,b,s,when,force);closeSheet();refreshTracker();
   tkMsg((a===b?'Muka surat '+a:'Muka surat '+a+'–'+b)+' → '+TS[s]+'.');
   sfx(s===2?'good':'tick');
 }
@@ -1066,7 +1201,15 @@ function wireTracker(){
   $('#shClose').addEventListener('click',closeSheet);$('#sheetBg').addEventListener('click',closeSheet);
   ['#shFrom','#shTo'].forEach(id=>{
     $(id).addEventListener('input',updateSheet);
-    $(id).addEventListener('change',()=>{const r=sheetRange();$('#shFrom').value=r[0];$('#shTo').value=r[1];updateSheet();});
+    $(id).addEventListener('change',()=>{const r=sheetRange();$('#shFrom').value=r[0];$('#shTo').value=r[1];syncSheetDate();updateSheet();});
+  });
+  $('#shDate').addEventListener('change',()=>{
+    const r=sheetRange();if(r[0]!==r[1])return;
+    const p=r[0],rec=trk.p[p];if(!rec||rec[0]<2||!$('#shDate').value)return;
+    const w=sheetDateTs(),o=rec[1];
+    rec[1]=w;if(!rec[2]||rec[2]===o||rec[2]<w)rec[2]=w;
+    store.set('trk',trk);updateSheet();refreshTracker();
+    tkMsg('Tarikh hafal muka surat '+p+' disimpan: '+fmtDate(w)+'.');sfx('tick');
   });
   $$('#shStatus button').forEach(b=>b.addEventListener('click',()=>applyStatus(+b.dataset.s)));
   $('#shRev').addEventListener('click',()=>{const r=sheetRange(),c=markRevised(r[0],r[1]);closeSheet();refreshTracker();tkMsg(c?c+' muka surat ditanda diulang hari ini.':'Tiada muka surat berstatus hafal dalam julat ini.');if(c)sfx('tick');});
@@ -1096,8 +1239,17 @@ const pagesStr=l=>l.slice(0,12).join(', ')+(l.length>12?' …':'');
 
 /* ---------- jadual harian ---------- */
 let jdl=store.get('jdl',{d:{},hd:{}});
-if(!jdl||typeof jdl.d!=='object')jdl={d:{},hd:{}};
-if(!jdl.hd||typeof jdl.hd!=='object')jdl.hd={};
+const KEYRE=/^\d{4}-\d{2}-\d{2}$/;
+function normJ(){
+  if(!jdl||typeof jdl!=='object'||typeof jdl.d!=='object'||!jdl.d)jdl={d:{},hd:{}};
+  if(!jdl.hd||typeof jdl.hd!=='object')jdl.hd={};
+  if(!jdl.pv||typeof jdl.pv!=='object')jdl.pv={};
+  if(!Array.isArray(jdl.mmHist))jdl.mmHist=[];
+  jdl.mmHist=jdl.mmHist.filter(h=>Array.isArray(h)&&KEYRE.test(h[0])&&KEYRE.test(h[1])&&h[0]<=h[1]).slice(-60);
+  const m=jdl.mm;
+  jdl.mm=m&&typeof m==='object'&&KEYRE.test(m.s)?{s:m.s,e:KEYRE.test(m.e)?m.e:''}:null;
+}
+normJ();
 const saveJ=()=>store.set('jdl',jdl);
 const DAYN=['Ahad','Isnin','Selasa','Rabu','Khamis','Jumaat','Sabtu'],DAY3=['Aha','Isn','Sel','Rab','Kha','Jum','Sab'];
 const SLOTS=[['s','Lepas Subuh'],['z','Lepas Zohor'],['a','Lepas Asar'],['m','Lepas Maghrib'],['i','Lepas Isyak']];
@@ -1123,8 +1275,29 @@ function partsOf(pg){
   for(let i=a;i<=b;i++){const w=AY[i].w.length,k=Math.min(3,Math.floor((cum+w/2)/tot*4));bk[k].push(i);cum+=w;}
   return bk.filter(x=>x.length).map(x=>({a:x[0],b:x[x.length-1]}));
 }
+function partsFor(pg){
+  const a=PS[pg-1],b=pageLast(pg),c=jdl.pv&&jdl.pv[pg];
+  if(Array.isArray(c)&&c.length&&c.length<=3){
+    let ok=true,prev=a;
+    c.forEach(x=>{if(!(Number.isInteger(x)&&x>prev&&x<=b))ok=false;prev=x;});
+    if(ok){const st=[a].concat(c);return st.map((x,i)=>({a:x,b:i+1<st.length?st[i+1]-1:b}));}
+  }
+  return partsOf(pg);
+}
+const MM_SESS=3,MM_CHUNK=10;
+const keyTs=k=>{const q=k.split('-').map(Number);return new Date(q[0],q[1]-1,q[2],12).getTime();};
+function mmActive(key){const m=jdl.mm;return !!(m&&m.s<=key&&(!m.e||key<=m.e));}
+function mmWas(key){return mmActive(key)||jdl.mmHist.some(h=>h[0]<=key&&key<=h[1]);}
+let mmNote='';
+function mmEndAuto(){
+  const m=jdl.mm,t=dkey(new Date());
+  if(m&&m.e&&t>m.e){jdl.mmHist.push([m.s,m.e]);jdl.mm=null;mmNote='Mod Murajaah tamat mengikut jangka yang ditetapkan. Jadual hafalan kembali seperti biasa.';return true;}
+  return false;
+}
+function replanToday(){jdl.d[dkey(new Date())]=freshPlan(new Date());saveJ();}
 function freshPlan(d){
-  const np=nextPage(),rest=!S.days[d.getDay()],parts=np?partsOf(np):[];
+  const mm=mmActive(dkey(d));
+  const np=nextPage(),rest=!S.days[d.getDay()],parts=np&&!mm?partsFor(np):[];
   const half=S.perDay<1&&parts.length>=2,hf=half&&jdl.hd[np]?1:0;
   const pp=np?np-1:604,prev=pp>=1&&pgStatus(pp)>=2?pp:0;
   const rep=[],pool=[];
@@ -1132,10 +1305,15 @@ function freshPlan(d){
   const nC=Math.ceil(pool.length/MUR_CHUNK),size=nC?Math.ceil(pool.length/nC):0;
   const age=p=>{const r=trk.p[p];return r[2]||r[1]||0;};
   pool.sort((a,b)=>age(a)-age(b)||a-b);
+  if(mm){
+    const n=Math.min(pool.length,MM_SESS*MM_CHUNK),k=Math.ceil(n/MM_CHUNK),sz=k?Math.ceil(n/k):0,mb=[];
+    for(let q=0;q<k;q++)mb.push(pool.slice(q*sz,Math.min(n,(q+1)*sz)).sort((a,b)=>a-b));
+    return {pg:0,np:np,rest:false,mm:1,half:false,hf:0,prev:prev,rep:rep,mur:[],mb:mb,ci:0,nC:Math.ceil(pool.length/(MM_SESS*MM_CHUNK)),done:{}};
+  }
   return {pg:rest?0:np,np:np,rest:rest,half:half,hf:hf,prev:prev,rep:rep,mur:pool.slice(0,size).sort((a,b)=>a-b),ci:0,nC:nC,done:{}};
 }
 function getPlan(){
-  const d=new Date(),key=dkey(d);let pl=jdl.d[key];
+  const d=new Date(),key=dkey(d);mmEndAuto();let pl=jdl.d[key];
   if(!pl||!Object.keys(pl.done).length){pl=freshPlan(d);jdl.d[key]=pl;}
   const cut=new Date();cut.setDate(cut.getDate()-120);const ck=dkey(cut);
   Object.keys(jdl.d).forEach(k=>{if(k<ck)delete jdl.d[k];});
@@ -1145,17 +1323,19 @@ const noteTxt=l=>{const a=l.filter(p=>trk.n[p]).slice(0,4).map(p=>'muka '+p+': '
 function planItems(pl){
   const L=[];
   const add=(slot,id,title,sub,x)=>L.push(Object.assign({slot:slot,id:id,title:title,sub:sub||''},x||{}));
-  if(pl.prev)add('s','mp','Murajaah muka '+pl.prev+' (semalam) — 5×','Muka terbaru dihafal: '+locTxt(PS[pl.prev-1],pageLast(pl.prev))+'.'+noteTxt([pl.prev]));
+  if(pl.prev)add('s','mp','Murajaah muka '+pl.prev+(pl.mm?' (terbaru) — 5×':' (semalam) — 5×'),'Muka terbaru dihafal: '+locTxt(PS[pl.prev-1],pageLast(pl.prev))+'.'+noteTxt([pl.prev]));
   if(pl.rep.length)add('s','mr','Ulang muka bertanda ↻ sehingga lancar','Muka '+ranges(pl.rep)+' (Perlu ulang dalam Tracker). Menanda siap memulangkannya kepada Sudah hafal.'+noteTxt(pl.rep));
   if(pl.mur.length)add('s','mo','Murajaah muka lama — 1× setiap muka','Muka '+ranges(pl.mur)+(pl.nC>1?'. Dipilih yang paling lama tidak diulang; satu pusingan penuh mengambil '+pl.nC+' pagi.':'.')+noteTxt(pl.mur));
+  const MMS=['s','a','i'],MMN=['Sesi Subuh','Sesi Asar','Sesi Isyak'];
+  (pl.mb||[]).forEach((q,i)=>add(MMS[i],'mo'+(i+1),'Murajaah muka lama — 1× setiap muka ('+MMN[i].toLowerCase()+')','Muka '+ranges(q)+(i===0?'. Dipilih yang paling lama tidak diulang'+(pl.nC>1?'; satu pusingan penuh mengambil '+pl.nC+' hari Mod Murajaah.':'.'):'.')+noteTxt(q)));
   if(L.length){
-    const all=[];if(pl.prev)all.push(pl.prev);pl.rep.concat(pl.mur).forEach(x=>{if(all.indexOf(x)<0)all.push(x);});
+    const all=[];if(pl.prev)all.push(pl.prev);pl.rep.concat(pl.mur,...(pl.mb||[])).forEach(x=>{if(all.indexOf(x)<0)all.push(x);});
     L[L.length-1].testPages=all.sort((a,b)=>a-b);
   }
   if(pl.pg){
-    const pt=partsOf(pl.pg),n=pt.length,cut=Math.ceil(n/2);
+    const pt=partsFor(pl.pg),n=pt.length,cut=Math.ceil(n/2);
     const sel=pl.half?(pl.hf?pt.slice(cut):pt.slice(0,cut)):pt,off=pl.half&&pl.hf?cut:0,order=['s','z','a','m'];
-    sel.forEach((q,i)=>add(order[i],'b'+(off+i+1),'Hafaz Bahagian '+(off+i+1)+' — '+locTxt(q.a,q.b),(i===0?FLOW+noteTxt([pl.pg]):'Talaqqi → 20× tengok mushaf → 10× tutup → sambung ayat seterusnya.')));
+    sel.forEach((q,i)=>add(order[i],'b'+(off+i+1),'Hafaz Bahagian '+(off+i+1)+' — '+locTxt(q.a,q.b),(i===0?FLOW+noteTxt([pl.pg]):'Talaqqi → 20× tengok mushaf → 10× tutup → sambung ayat seterusnya.'),{edit:pl.pg}));
     const whole=!pl.half||pl.hf;
     if(whole&&pl.pg<604)add('m','tie','Tie Method','Sambung ayat akhir muka '+pl.pg+' ('+ayRef(pageLast(pl.pg))+') terus ke ayat pertama muka '+(pl.pg+1)+' ('+ayRef(PS[pl.pg])+').');
     add('i','tk',whole?'Baca muka '+pl.pg+' penuh sampai lancar, tutup mushaf — ulang 40×':'Baca bahagian hari ini sampai lancar, tutup mushaf — ulang 40×',
@@ -1176,10 +1356,16 @@ function renderPlan(){
   const h=$('#plHead');h.textContent='';
   h.append(el('h2','',DAYN[d.getDay()]+', '+d.getDate()+' '+MONTHS[d.getMonth()]+' '+d.getFullYear()));
   let line='';
-  if(!pl.np)line='Semua 604 muka surat sudah ditanda hafal. Kekalkan murajaah.';
+  syncMM();
+  if(pl.mm)line='Mod Murajaah: tiada hafalan baharu hari ini. Fokus murajaah dalam '+Math.max(1,(pl.mb||[]).length)+' sesi.';
+  else if(!pl.np)line='Semua 604 muka surat sudah ditanda hafal. Kekalkan murajaah.';
   else if(pl.rest)line='Hari rehat hafalan baharu. Murajaah sahaja hari ini.';
   else line='Hafaz hari ini: muka '+pl.pg+(pl.half?' (separuh '+(pl.hf+1)+' daripada 2)':'')+' · '+locTxt(PS[pl.pg-1],pageLast(pl.pg))+' · Juz '+PAGE_JUZ[pl.pg];
   h.append(el('p','hint',line));
+  if(pl.np&&!pl.mm){
+    if(jdl.pv[pl.np]&&partsFor(pl.np).length>1)h.append(el('p','hint','Pembahagian ayat muka '+pl.np+' telah disesuaikan.'));
+    const sb=el('button','btn tiny plhdbtn','Ubah pembahagian ayat');sb.type='button';sb.dataset.split=pl.np;h.append(sb);
+  }
   const dn=its.filter(i=>pl.done[i.id]).length,row=el('div','plrow'),bar=el('div','pbar'),fill=el('i');
   fill.style.width=(its.length?dn/its.length*100:0)+'%';bar.append(fill);
   const st=planStreak();
@@ -1187,7 +1373,7 @@ function renderPlan(){
   h.append(row);
   const box=$('#plSlots');box.textContent='';
   if(!its.length){plMsg('Tiada tugasan hari ini. Tandakan hafalan sedia ada dalam Tracker untuk menjana murajaah.');return;}
-  plMsg(dn===its.length?'Alhamdulillah, semua tugasan hari ini siap.':'');
+  plMsg(dn===its.length?'Alhamdulillah, semua tugasan hari ini siap.':mmNote);mmNote='';
   SLOTS.forEach(sl=>{
     const L=its.filter(i=>i.slot===sl[0]);if(!L.length)return;
     const c=el('div','card slot'),hh=el('h2','',sl[1]);hh.append(el('small','',S.times[sl[0]]));c.append(hh);
@@ -1196,6 +1382,7 @@ function renderPlan(){
       const w=el('div','tw'),lb=el('label');lb.htmlFor=cb.id;lb.append(el('b','',i.title));if(i.sub)lb.append(el('small','',i.sub));w.append(lb);
       if(i.testPages){const b=el('button','btn tiny','Uji murajaah hari ini');b.type='button';b.dataset.pages=i.testPages.join(',');w.append(b);}
       if(i.test){const b=el('button','btn tiny','Uji muka '+i.test);b.type='button';b.dataset.test=i.test;w.append(b);}
+      if(i.edit&&partsFor(i.edit).length>1){const b=el('button','btn tiny','Ubah');b.type='button';b.dataset.split=i.edit;b.setAttribute('aria-label','Ubah pembahagian ayat');w.append(b);}
       row.append(cb,w);c.append(row);
     });
     box.append(c);
@@ -1208,6 +1395,7 @@ function toggleItem(id,on){
     pl.done[id]=1;
     if(id==='mp')markRevised(pl.prev,pl.prev);
     else if(id==='mo')pl.mur.forEach(p=>markRevised(p,p));
+    else if(/^mo\d$/.test(id)){const q=pl.mb&&pl.mb[+id.slice(2)-1];if(q)q.forEach(p=>markRevised(p,p));}
     else if(id==='mr')pl.rep.forEach(p=>{setStatus(p,p,2);markRevised(p,p);});
     else if(/^b\d$/.test(id)){if(pgStatus(pl.pg)===0)setStatus(pl.pg,pl.pg,1);}
     else if(id==='tk'){
@@ -1230,13 +1418,13 @@ function buildIcs(){
   const P2=n=>String(n).padStart(2,'0'),now=new Date();
   const stamp=now.getUTCFullYear()+P2(now.getUTCMonth()+1)+P2(now.getUTCDate())+'T'+P2(now.getUTCHours())+P2(now.getUTCMinutes())+P2(now.getUTCSeconds())+'Z';
   const info={
-    s:['Lepas Subuh','Murajaah (muka semalam 5x, muka lama 1x), kemudian hafaz Bahagian 1.'],
-    z:['Lepas Zohor','Hafaz Bahagian 2.'],
-    a:['Lepas Asar','Hafaz Bahagian 3.'],
-    m:['Lepas Maghrib','Hafaz Bahagian 4 dan Tie Method.'],
-    i:['Lepas Isyak','Baca satu muka penuh, tutup mushaf, ulang 40x (Takrar).']
+    s:['Lepas Subuh','Murajaah pagi dan hafalan mengikut tugasan hari ini dalam app Hafazan Al-Quran.'],
+    z:['Lepas Zohor','Sesi hafalan tengah hari. Lihat tugasan hari ini dalam app.'],
+    a:['Lepas Asar','Sesi petang. Lihat tugasan hari ini dalam app.'],
+    m:['Lepas Maghrib','Sesi Maghrib. Lihat tugasan hari ini dalam app.'],
+    i:['Lepas Isyak','Sesi malam (Takrar atau murajaah). Lihat tugasan hari ini dalam app.']
   };
-  const esc=s=>String(s).replace(/\\/g,'\\\\').replace(/;/g,'\;').replace(/,/g,'\\,');
+  const esc=s=>String(s).replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,');
   const fold=l=>{let o='';while(l.length>73){o+=l.slice(0,73)+'\r\n ';l=l.slice(73);}return o+l;};
   const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Hafazan Al-Quran//MS','CALSCALE:GREGORIAN'];
   let n=0;
@@ -1293,6 +1481,121 @@ function buildPlanUI(){
   $('#plSlots').addEventListener('change',e=>{const c=e.target.closest('input[type=checkbox]');if(c)toggleItem(c.dataset.id,c.checked);});
   $('#plSlots').addEventListener('click',e=>{const bp=e.target.closest('[data-pages]');if(bp){startSession({type:'pages',pages:bp.dataset.pages.split(',').map(Number)});return;}const b=e.target.closest('[data-test]');if(b){const p=+b.dataset.test;startSession({type:'page',pFrom:p,pTo:p});}});
   syncPlanUI();
+}
+
+/* ---------- mod murajaah (kad) ---------- */
+function syncMM(){
+  const m=jdl.mm,on=!!m;
+  $('#mmOff').hidden=on;$('#mmOn').hidden=!on;$('#plMode').classList.toggle('on',on);
+  if(on){
+    const t=dkey(new Date()),n=Math.round((keyTs(t)-keyTs(m.s))/864e5)+1;
+    let tx='Sejak '+fmtDate(keyTs(m.s))+' · hari ke-'+n+'.';
+    if(m.e){const left=Math.round((keyTs(m.e)-keyTs(t))/864e5);tx+=' Tamat '+fmtDate(keyTs(m.e))+(left>0?' (baki '+left+' hari).':' (hari terakhir).');}
+    else tx+=' Tamatkan sendiri apabila sudah boleh menghafal semula.';
+    $('#mmInfo').textContent=tx;
+  }else{
+    const t=todayStr();$('#mmStart').max=t;if(!$('#mmStart').value)$('#mmStart').value=t;
+  }
+}
+function wireMM(){
+  $('#mmGo').addEventListener('click',()=>{
+    const t=dkey(new Date());let st=$('#mmStart').value||t;if(!KEYRE.test(st)||st>t)st=t;
+    const dv=parseInt($('#mmDays').value,10);let e='';
+    if(dv>=1){const dd=Math.min(30,dv),x=new Date(keyTs(st));x.setDate(x.getDate()+dd-1);e=dkey(x);}
+    if(e&&e<t){plMsg('Jangka sudah tamat sebelum hari ini. Masukkan jangka yang lebih panjang atau kosongkan.');return;}
+    jdl.mm={s:st,e:e};replanToday();renderPlan();
+    $('#mmForm').open=false;$('#mmDays').value='';
+    plMsg('Mod Murajaah dimulakan. Jadual hari ini dijana semula.');
+  });
+  $('#mmStop').addEventListener('click',()=>{
+    const m=jdl.mm;if(!m)return;
+    const t=dkey(new Date());jdl.mmHist.push([m.s,t<m.s?m.s:t]);jdl.mm=null;
+    replanToday();renderPlan();plMsg('Mod Murajaah ditamatkan. Jadual hafalan kembali seperti biasa.');
+  });
+}
+
+/* ---------- ubah pembahagian ayat ---------- */
+let spPage=0,spCuts=[],spFocus=null;
+const spAuto=pg=>partsOf(pg).slice(1).map(x=>x.a);
+function spSums(){
+  const a=PS[spPage-1],b=pageLast(spPage),st=[a].concat(spCuts).sort((x,y)=>x-y),o=[];
+  st.forEach((x,i)=>{const e=i+1<st.length?st[i+1]-1:b;let w=0;for(let q=x;q<=e;q++)w+=AY[q].w.length;o.push(w);});
+  return o;
+}
+function renderSplit(){
+  const a=PS[spPage-1],b=pageLast(spPage),box=$('#spList');box.textContent='';
+  const cs=spCuts.slice().sort((x,y)=>x-y);let k=0;
+  for(let i=a;i<=b;i++){
+    if(i>a&&cs.indexOf(i)>=0)k++;
+    const row=el('div','sp-row');row.dataset.k=k;
+    row.append(el('span','sp-bd','B'+(k+1)));
+    const tx=el('div','sp-tx'),ar=el('span','ar',AY[i].w.slice(0,6).join(' ')+(AY[i].w.length>6?' …':''));ar.lang='ar';
+    tx.append(el('b','',ayRef(i)),ar,el('small','',AY[i].w.length+' perkataan'));row.append(tx);
+    if(i>a){
+      const cb=el('button','sp-cut','✂');cb.type='button';cb.dataset.i=i;
+      cb.setAttribute('aria-pressed',String(cs.indexOf(i)>=0));
+      cb.setAttribute('aria-label','Mulakan Bahagian baharu di '+ayRef(i));row.append(cb);
+    }
+    box.append(row);
+  }
+  const sm=spSums();
+  $('#spCount').textContent=sm.length+' bahagian · perkataan: '+sm.map((w,i)=>'B'+(i+1)+' '+w).join(' · ')+'.';
+}
+function openSplit(pg,from){
+  if(!(pg>=1&&pg<=604))return;
+  spPage=pg;spFocus=from||document.activeElement;
+  const cur=partsFor(pg);spCuts=cur.slice(1).map(x=>x.a);
+  const n=pageLast(pg)-PS[pg-1]+1;
+  $('#spTitle').textContent='Pembahagian ayat · muka '+pg;
+  $('#spInfo').textContent=n<2?'Muka surat ini hanya ada satu ayat, jadi tidak boleh dibahagikan.':'Tekan ✂ pada satu ayat untuk memulakan bahagian baharu di situ. Maksimum 4 bahagian. Pembahagian auto mengikut bilangan perkataan.';
+  renderSplit();
+  $('#splitSheet').hidden=false;$('#splitBg').hidden=false;$('#spClose').focus();
+}
+function closeSplit(){
+  $('#splitSheet').hidden=true;$('#splitBg').hidden=true;
+  if(spFocus&&spFocus.focus&&document.body.contains(spFocus))spFocus.focus({preventScroll:true});
+}
+function afterSplitChange(pg){
+  const pl=jdl.d[dkey(new Date())];
+  if(pl&&pl.np===pg&&!pl.mm){pl.half=S.perDay<1&&partsFor(pg).length>=2;if(!pl.half)pl.hf=0;}
+  saveJ();renderPlan();
+}
+function saveSplit(){
+  const pg=spPage,cs=spCuts.slice().sort((x,y)=>x-y),au=spAuto(pg);
+  if(cs.join(',')===au.join(','))delete jdl.pv[pg];else jdl.pv[pg]=cs;
+  closeSplit();afterSplitChange(pg);
+  plMsg(jdl.pv[pg]?'Pembahagian ayat muka '+pg+' disimpan.':'Pembahagian ayat muka '+pg+' kembali automatik.');
+}
+function wireSplit(){
+  $('#spList').addEventListener('click',e=>{
+    const b=e.target.closest('.sp-cut');if(!b)return;
+    const i=+b.dataset.i,at=spCuts.indexOf(i);
+    if(at>=0)spCuts.splice(at,1);
+    else if(spCuts.length>=3){$('#spCount').textContent='Maksimum 4 bahagian. Buang satu potongan dahulu.';return;}
+    else spCuts.push(i);
+    renderSplit();
+  });
+  $('#spAuto').addEventListener('click',()=>{spCuts=spAuto(spPage);renderSplit();});
+  $('#spSave').addEventListener('click',saveSplit);
+  $('#spClose').addEventListener('click',closeSplit);$('#splitBg').addEventListener('click',closeSplit);
+  const open=e=>{const b=e.target.closest('[data-split]');if(b)openSplit(+b.dataset.split,b);};
+  $('#plHead').addEventListener('click',open);$('#plSlots').addEventListener('click',open);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#splitSheet').hidden){e.preventDefault();closeSplit();}});
+}
+
+/* ---------- panduan ---------- */
+let helpFocus=null;
+function openHelp(){
+  helpFocus=document.activeElement;$('#helpPanel').hidden=false;$('#helpBg').hidden=false;$('#helpPanel .hp-body').scrollTop=0;$('#hpClose').focus();
+}
+function closeHelp(){
+  $('#helpPanel').hidden=true;$('#helpBg').hidden=true;
+  if(helpFocus&&helpFocus.focus&&document.body.contains(helpFocus))helpFocus.focus({preventScroll:true});
+}
+function wireHelp(){
+  $('#btnHelp').addEventListener('click',openHelp);
+  $('#hpClose').addEventListener('click',closeHelp);$('#helpBg').addEventListener('click',closeHelp);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#helpPanel').hidden){e.preventDefault();closeHelp();}});
 }
 
 /* ---------- views ---------- */
@@ -1395,7 +1698,7 @@ function importData(file){
       prog=o.prog;stats=o.stats;if(!stats.days)stats.days={};
       if(o.settings)S=normS(o.settings);
       if(o.trk&&typeof o.trk.p==='object'){trk=normTrk(o.trk);store.set('trk',trk);}
-      if(o.jdl&&typeof o.jdl.d==='object'){jdl=o.jdl;if(!jdl.hd||typeof jdl.hd!=='object')jdl.hd={};saveJ();}
+      if(o.jdl&&typeof o.jdl.d==='object'){jdl=o.jdl;normJ();saveJ();}
       store.set('prog',prog);store.set('stats',stats);saveS();syncUI();syncPlanUI();refreshTracker();
       msg('Berjaya diimport: '+Object.keys(prog).length+' ayat diuji · '+Object.keys(trk.p).length+' muka surat Tracker. Data sebelumnya telah diganti.');
     }catch(e){msg('Fail tidak sah — pastikan ia fail eksport daripada aplikasi ini.');}
@@ -1414,7 +1717,7 @@ function buildMore(){
   $('#fileImport').addEventListener('change',e=>{if(e.target.files[0])importData(e.target.files[0]);e.target.value='';});
   $('#btnReset').addEventListener('click',e=>{
     const b=e.currentTarget;
-    if(Date.now()-resetArmed<4000){prog={};stats={q:0,o:0,h:0,f:0,days:{}};trk={p:{},n:{}};jdl={d:{},hd:{}};store.set('prog',prog);store.set('stats',stats);store.set('trk',trk);saveJ();refreshTracker();resetArmed=0;b.textContent='Padam semua kemajuan';msg('Semua kemajuan telah dipadam.');}
+    if(Date.now()-resetArmed<4000){prog={};stats={q:0,o:0,h:0,f:0,days:{}};trk={p:{},n:{}};jdl={d:{},hd:{},pv:{},mm:null,mmHist:[]};store.set('prog',prog);store.set('stats',stats);store.set('trk',trk);saveJ();refreshTracker();resetArmed=0;b.textContent='Padam semua kemajuan';msg('Semua kemajuan telah dipadam.');}
     else{resetArmed=Date.now();b.textContent='Tekan sekali lagi untuk sahkan';msg('Tindakan ini tidak boleh dibatalkan dan termasuk data Tracker dan Jadual. Eksport dahulu jika perlu.');
       setTimeout(()=>{if(Date.now()-resetArmed>=3900)b.textContent='Padam semua kemajuan';},4100);}
   });
@@ -1465,9 +1768,9 @@ if(/^https?:$/.test(location.protocol)){
   if('serviceWorker' in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});
 }
 const HASHV={'#uji':'setup','#tracker':'track','#statistik':'stats','#tetapan':'more','#jadual':'plan'};
-buildSetup();buildMore();wireTracker();buildPlanUI();syncUI();showNotice();show(HASHV[location.hash]||'track');
+buildSetup();buildMore();wireTracker();buildPlanUI();wireMM();wireSplit();wireHelp();syncUI();showNotice();show(HASHV[location.hash]||'track');
 window.addEventListener('hashchange',()=>{const v=HASHV[location.hash];if(v&&!inTest())show(v);});
-window.__tebuk={markRevised:markRevised,getPlan:getPlan,planItems:planItems,toggleItem:toggleItem,freshPlan:freshPlan,partsOf:partsOf,nextPage:nextPage,buildIcs:buildIcs,planStreak:planStreak,get jdl(){return jdl},AY:AY,get S(){return S},get prog(){return prog},get stats(){return stats},get sess(){return sess},get Q(){return Q},windows:windows,scopeMask:scopeMask,get trk(){return trk},setStatus:setStatus,PAGE_JUZ:PAGE_JUZ,JUZ_PAGES:JUZ_PAGES,renderSfx:renderSfx,names:Object.keys(SFX),get sfxCount(){return sfxCount},get audioState(){return AC?AC.state:null}};
+window.__tebuk={markRevised:markRevised,getPlan:getPlan,planItems:planItems,toggleItem:toggleItem,freshPlan:freshPlan,partsOf:partsOf,partsFor:partsFor,replanToday:replanToday,mmActive:mmActive,dkey:dkey,todayStr:todayStr,openSheet:openSheet,saveS:saveS,saveJ:saveJ,planSettingsChanged:planSettingsChanged,refreshTracker:refreshTracker,pageLast:pageLast,store:store,mmWas:mmWas,nextPage:nextPage,buildIcs:buildIcs,planStreak:planStreak,get jdl(){return jdl},AY:AY,get S(){return S},get prog(){return prog},get stats(){return stats},get sess(){return sess},get Q(){return Q},windows:windows,scopeMask:scopeMask,get trk(){return trk},setStatus:setStatus,PAGE_JUZ:PAGE_JUZ,JUZ_PAGES:JUZ_PAGES,renderSfx:renderSfx,names:Object.keys(SFX),get sfxCount(){return sfxCount},get audioState(){return AC?AC.state:null}};
 })();
 </script>
 </body>
