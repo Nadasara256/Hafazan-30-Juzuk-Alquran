@@ -1,5 +1,5 @@
-/* Hafazan Al-Quran: service worker (cache-first, kemas kini di latar). Versi: 402360e83d */
-const CACHE = 'hafazan-402360e83d';
+/* Hafazan Al-Quran: service worker (cache-first, kemas kini di latar). Versi: 543b746f44 */
+const CACHE = 'hafazan-543b746f44';
 const ASSETS = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'icon-180.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
