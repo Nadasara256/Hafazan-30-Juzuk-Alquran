@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "Hafazan Al-Quran",
-  "short_name": "Hafazan",
-  "description": "Rekod, jadual dan uji hafazan Al-Quran. Berfungsi tanpa internet.",
+  "name": "Huffaz Diary",
+  "short_name": "Huffaz Diary",
+  "description": "Rekod, jadual, uji dan baca hafazan Al-Quran. Berfungsi tanpa internet.",
   "lang": "ms",
   "dir": "ltr",
   "start_url": "./",
@@ -62,6 +62,18 @@
       "name": "Rekod",
       "short_name": "Rekod",
       "url": "./#rekod",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Baca Al-Quran",
+      "short_name": "Baca",
+      "url": "./#baca",
       "icons": [
         {
           "src": "icon-192.png",
