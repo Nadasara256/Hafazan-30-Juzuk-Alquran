@@ -2,7 +2,7 @@
   "id": "./",
   "name": "Hafazan Al-Quran",
   "short_name": "Hafazan",
-  "description": "Tracker, jadual dan uji hafazan Al-Quran. Berfungsi tanpa internet.",
+  "description": "Rekod, jadual dan uji hafazan Al-Quran. Berfungsi tanpa internet.",
   "lang": "ms",
   "dir": "ltr",
   "start_url": "./",
@@ -59,9 +59,9 @@
       ]
     },
     {
-      "name": "Tracker",
-      "short_name": "Tracker",
-      "url": "./#tracker",
+      "name": "Rekod",
+      "short_name": "Rekod",
+      "url": "./#rekod",
       "icons": [
         {
           "src": "icon-192.png",
