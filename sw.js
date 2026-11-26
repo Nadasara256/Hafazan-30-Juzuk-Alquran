@@ -1,5 +1,5 @@
-/* Huffaz Diary: service worker (cache-first, kemas kini di latar). Versi: 2437b995ea */
-const CACHE = 'hafazan-2437b995ea';
+/* Huffaz Diary: service worker (cache-first, kemas kini di latar). Versi: 3470ecce63 */
+const CACHE = 'hafazan-3470ecce63';
 const ASSETS = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'icon-180.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
